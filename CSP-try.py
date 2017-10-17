@@ -36,8 +36,9 @@ Ella's design went 10 feet farther than the black plane
 '''
 
 def hint4(student, color, distance):
-    if (student == "Ella" and color == "black"):
-        distance = distance + 10
+    if (student == "Ella" and color != "black" and distance == 25):
+        return
+    if (student != "Ella" and color == "black" and distance == 25):
         return
     return student, color, distance
 
