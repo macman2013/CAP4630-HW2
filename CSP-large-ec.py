@@ -1,3 +1,6 @@
+# Quizzle 3 Extra Credit - CSP Solution
+# Krista Shuckerow and Dale Keith
+
 from constraint import *
 '''
 FINISHED
