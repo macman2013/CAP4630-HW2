@@ -3,7 +3,7 @@ from constraint import *
 FINISHED
 The car with the YGA-441 plates was fined 25 dollars more than the vehicle from Hawaii
 '''
-def hint1(fine1, fine2, state, license_plate):
+def hint1(state, license_plate, fine1, fine2):
     if(license_plate == "YGA-441" and state == "Hawaii"):
         if(fine1 - fine2 != 25):
             return False
@@ -29,21 +29,24 @@ def hint2(car, license_plate, fine):
     return True
 
 '''
-The car that went to Rainbow Reef, license_plate Yang's car, and the Samantha are three different cars
+FINISHED
+The four cars are the vehicle from Colorado, the Grandero, the Fierro, and the Injitsu
 '''
-def hint3(car, state, license_plate):
+def hint3(state, car1, car2, car3):
     #They are all mutually exlusive
-    if(car == "Samantha" and (state == "Rainbow Reef" or license_plate == "Yang")):
+    if(state == "Colorado" and (car1 == "Grandero" or car2 == "Fierro" or car3 == "Injitsu")):
         return False
-    if(state == "Rainbow Reef" and (car == "Samantha" or license_plate == "Yang")):
+    if(car1 == "Grandero" and (state == "Colorado" or car2 == "Fierro" or car3 == "Injitsu")):
         return False
-    if(license_plate == "Yang" and (car == "Samantha" or state == "Rainbow Reef")):
+    if(car2 == "Fierro" and (state == "Colorado" or car1 == "Grandero" or car3 == "Injitsu")):
+        return False
+    if(car3 == "Injitsu" and (state == "Colorado" or car1 == "Grandero" or car2 == "Fierro")):
         return False
     return True
 
 
 '''
-FINSHED
+FINSIHED
 The vehicle that received the $50 fine, the Grandero, and the Injitsu are three different cars
 '''
 def hint4(car, fine, car2):
@@ -57,12 +60,16 @@ def hint4(car, fine, car2):
     return True
 
 '''
-The vessel that saw 5 fines didn't go to Arno's Spit
+FINISHED
+The vehicle from Alaska was fined 25 dollars more than the Fierro
 '''
-def hint5(state, fine):
-    #Ella's plane when 10 feet further than black plane so Ella's is pink
-    if(fine == 5 and state == "Arno's Spit"):
-        return False
+def hint5(state, car, fine1, fine2):
+    if(state == "Alaska" and car == "Fierro"):
+        if(fine1 - fine2 != 25):
+            return False
+    elif(car == "Fierro" and state == "Alaska"):
+        if(fine2 - fine1 != 25):
+            return False
     return True
 
 '''
@@ -131,17 +138,21 @@ def main():
     #cars is now the identifier
     problem.addConstraint(lambda a, b, c, d: a == "Cavalo" and b == "Fierro" and c == "Grandero" and d == "Injitsu", ("cars0", "cars1", "cars2", "cars3"))
 
-    #change for new problem all below
+    #Hint 1, 2, 3, 4, 5, 6 done here
     for i in range(len(cars)):
-        problem.addConstraint(FunctionConstraint(hint1), ["cars" + str(i), "states" + str(i), "license_plates" + str(i)])
-        problem.addConstraint(FunctionConstraint(hint2), ["cars" + str(i), "states" + str(i), "fines" + str(i), "fines3"])
-        problem.addConstraint(FunctionConstraint(hint3), ["cars" + str(i), "states" + str(i), "license_plates" + str(i)])
+        # for j in range(len(cars)):
+        #     problem.addConstraint(FunctionConstraint(hint1), ["states" + str(i), "license_plates" + str(i), "fines" + str(i), "fines" + str(j)])
+        problem.addConstraint(FunctionConstraint(hint2), ["cars" + str(i), "license_plates" + str(i), "fines" + str(i)])
         for j in range(len(cars)):
-            problem.addConstraint(FunctionConstraint(hint4), ["states" + str(i), "states" + str(j), "fines" + str(i), "fines" + str(j)])
-        problem.addConstraint(FunctionConstraint(hint5), ["states" + str(i), "fines" + str(i)])
+            for k in range(len(cars)):
+                problem.addConstraint(FunctionConstraint(hint3), ["states" + str(i), "cars" + str(i), "cars" + str(j), "cars" + str(k)])
+        for j in range(len(cars)):
+            problem.addConstraint(FunctionConstraint(hint4), ["cars" + str(i), "fines" + str(i), "cars" + str(j)])
+        for j in range(len(cars)):
+            problem.addConstraint(FunctionConstraint(hint5), ["states" + str(i), "cars" + str(j), "fines" + str(i), "fines" + str(j)])
         problem.addConstraint(FunctionConstraint(hint6), ["cars" + str(i), "fines" + str(i), "license_plates" + str(i)])
         #We know Fierro subset ends in 1
-        problem.addConstraint(FunctionConstraint(hint7), ["cars" + str(i), "states" + str(i), "fines" + str(i), "license_plates" + str(i), "cars1", "fines1", "license_plates1"])
+        problem.addConstraint(FunctionConstraint(hint7), ["license_plates" + str(i), "fines" + str(i)])
 
     print "Number of Solutions: ", len(problem.getSolutions())
     for answer in problem.getSolutions():
