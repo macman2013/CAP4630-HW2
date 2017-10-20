@@ -140,8 +140,8 @@ def main():
 
     #Hint 1, 2, 3, 4, 5, 6 done here
     for i in range(len(cars)):
-        # for j in range(len(cars)):
-        #     problem.addConstraint(FunctionConstraint(hint1), ["states" + str(i), "license_plates" + str(i), "fines" + str(i), "fines" + str(j)])
+        for j in range(len(cars)):
+            problem.addConstraint(FunctionConstraint(hint1), ["states" + str(i), "license_plates" + str(i), "fines" + str(i), "fines" + str(j)])
         problem.addConstraint(FunctionConstraint(hint2), ["cars" + str(i), "license_plates" + str(i), "fines" + str(i)])
         for j in range(len(cars)):
             for k in range(len(cars)):
